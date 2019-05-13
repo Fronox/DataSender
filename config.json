@@ -1,0 +1,29 @@
+{
+  "sources": [
+    "media_markt_t1",
+    "media_markt_t2",
+    "media_markt_t6"
+  ],
+  "media_markt_t1": {
+    "source_type": "file",
+    "fname": "T1_Final.csv",
+    "currency_file": "EURUSD.csv",
+    "rowN": 0
+  },
+  "media_markt_t2": {
+    "source_type": "file",
+    "fname": "T2_Final.csv",
+    "currency_file": "EURUSD.csv",
+    "rowN": 0
+  },
+  "media_markt_t6": {
+    "source_type": "file",
+    "fname": "T6_Final.csv",
+    "currency_file": "EURUSD.csv",
+    "rowN": 0
+  },
+  "forex_api": {
+    "source_type": "api",
+    "url": "url_string"
+  }
+}
