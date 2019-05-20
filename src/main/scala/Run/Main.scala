@@ -35,7 +35,7 @@ object Main {
           val currencyPath = (sourceJson \\ "currency_file").extract[String]
           FileSource(filePath, currencyPath, sourceInfo)
         // For further extensions
-        /* case "api" =>
+        /*case "api" =>
           ???
         case _ =>
           println("Unknown source type")*/

@@ -15,31 +15,49 @@ class Sender(dataSources: List[DataSource], kafkaProps: Properties) extends Acto
   val producer = new KafkaProducer[String, String](kafkaProps)
   override def receive: Receive = onMessage(linesCount)
 
+  private def fileDataSend(fileSource: FileSource, linesCount: Int): Unit ={
+    //Readers initialization
+    val dataReader = CSVReader.open(new File(fileSource.filePath))
+    val currencyReader = CSVReader.open(new File(fileSource.currencyPath))
+
+    //Streams initialization
+    val dataStream = dataReader.toStream
+    val currencyStream = currencyReader.toStream
+
+    //Data reading
+    if(linesCount != 1) {
+      val tuneDataPart2 = dataStream
+        .slice(linesCount - 1, linesCount - 1 + linesRead)
+        .head
+        .tail
+        .mkString(" ")
+      val Stream(tuneDataPart1, predictData) = currencyStream
+        .slice(linesCount - 1, linesCount + linesRead)
+        .map(list => list.mkString(" "))
+
+      val tuneData = s"$tuneDataPart1 $tuneDataPart2"
+
+      val tuneTopic = s"${fileSource.kafkaTopic}_tune"
+      val predictTopic = fileSource.kafkaTopic
+
+      //Data sending
+      println(s"About to publish message '$tuneData' to $tuneTopic")
+      println(s"About to publish message '$predictData' to $predictTopic")
+      println()
+      val tuneRecord = new ProducerRecord[String, String](tuneTopic, "key", tuneData)
+      val predictRecord = new ProducerRecord[String, String](predictTopic, "key", predictData)
+      producer.send(tuneRecord)
+      producer.send(predictRecord)
+    }
+  }
+
   private def onMessage(linesCount: Int): Receive = {
     case Tick =>
       for (dataSource <- dataSources) {
         dataSource match {
-          case FileSource(filePath, currencyPath, kafkaTopic) =>
-            //Readers initialization
-            val dataReader = CSVReader.open(new File(filePath))
-            val currencyReader = CSVReader.open(new File(currencyPath))
-
-            //Streams initialization
-            val dataStream = dataReader.toStream
-            val currencyStream = currencyReader.toStream
-
-            //Data reading
-            val articleData = dataStream.slice(linesCount, linesCount + linesRead).head.mkString(" ")
-            val currencyData = currencyStream.slice(linesCount, linesCount + linesRead).head.tail.mkString(" ")
-            val sendData = s"$articleData $currencyData"
-
-
+          case fileSource: FileSource =>
+            fileDataSend(fileSource, linesCount)
             context.become(onMessage(linesCount + linesRead))
-
-            //Data sending
-            println(s"About to publish message '$sendData' to $kafkaTopic")
-            val record = new ProducerRecord[String, String](kafkaTopic, "key", sendData)
-            producer.send(record)
         }
       }
   }
