@@ -1,9 +1,10 @@
 package Run
 
+import java.io.File
 import java.util.Properties
 
 import Lib.{DataSource, FileSource, Sender, Tick}
-import akka.actor.{ActorSystem, Props}
+import akka.actor.ActorSystem
 import com.typesafe.akka.extension.quartz.QuartzSchedulerExtension
 import org.json4s.DefaultFormats
 import org.json4s.jackson.JsonMethods.parse
@@ -15,7 +16,8 @@ object Main {
   implicit val formats: DefaultFormats.type = org.json4s.DefaultFormats
   val scheduler: QuartzSchedulerExtension = QuartzSchedulerExtension(actorSystem)
   val props = new Properties()
-  val configPath = "config.json"
+  //val jarPath = new File(getClass.getProtectionDomain.getCodeSource.getLocation.getPath).getParentFile.getAbsolutePath
+  val configPath = "config.json"  //jarPath + "/config.json"
 
   def main(args: Array[String]): Unit = {
     //Properties for kafka
@@ -33,7 +35,11 @@ object Main {
         case "file" =>
           val filePath = (sourceJson \\ "fname").extract[String]
           val currencyPath = (sourceJson \\ "currency_file").extract[String]
-          FileSource(filePath, currencyPath, sourceInfo)
+
+          //val filePath = jarPath + "/" + (sourceJson \\ "fname").extract[String]
+          //val currencyPath = jarPath + "/" + (sourceJson \\ "currency_file").extract[String]
+
+          FileSource(filePath, currencyPath, sourceInfoList.head/*Todo: change to sourceInfo*/)
         // For further extensions
         /*case "api" =>
           ???
@@ -43,7 +49,7 @@ object Main {
     }
     configFile.close()
 
-    val secondsCount = 2
+    val secondsCount = 1
     val sender = actorSystem.actorOf(Sender.props(sources, props), "sender")
     val scheduleName = s"Every${secondsCount}Second(s)"
     val scheduleParams = s"*/$secondsCount * * ? * *"

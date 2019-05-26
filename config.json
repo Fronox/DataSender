@@ -1,6 +1,8 @@
 {
   "sources": [
-    "media_markt_t1"
+    "media_markt_t1",
+    "media_markt_t2",
+    "media_markt_t6"
   ],
   "media_markt_t1": {
     "source_type": "file",
