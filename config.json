@@ -2,24 +2,38 @@
   "sources": [
     "media_markt_t1",
     "media_markt_t2",
-    "media_markt_t6"
+    "media_markt_t6",
+    "stream4",
+    "stream5"
   ],
   "media_markt_t1": {
     "source_type": "file",
-    "fname": "T1_Final.csv",
-    "currency_file": "EURUSD.csv",
+    "fname": "Datasets/T1_Final.csv",
+    "currency_file": "Datasets/EURUSD.csv",
     "rowN": 0
   },
   "media_markt_t2": {
     "source_type": "file",
-    "fname": "T2_Final.csv",
-    "currency_file": "EURUSD.csv",
+    "fname": "Datasets/T2_Final.csv",
+    "currency_file": "Datasets/EURUSD.csv",
     "rowN": 0
   },
   "media_markt_t6": {
     "source_type": "file",
-    "fname": "T6_Final.csv",
-    "currency_file": "EURUSD.csv",
+    "fname": "Datasets/T6_Final.csv",
+    "currency_file": "Datasets/EURUSD.csv",
+    "rowN": 0
+  },
+  "stream4": {
+    "source_type": "file",
+    "fname": "Datasets/T1_Final.csv",
+    "currency_file": "Datasets/EURUSD.csv",
+    "rowN": 0
+  },
+  "stream5": {
+    "source_type": "file",
+    "fname": "Datasets/T2_Final.csv",
+    "currency_file": "Datasets/EURUSD.csv",
     "rowN": 0
   },
   "forex_api": {

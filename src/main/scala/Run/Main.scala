@@ -1,6 +1,5 @@
 package Run
 
-import java.io.File
 import java.util.Properties
 
 import Lib.{DataSource, FileSource, Sender, Tick}
@@ -39,7 +38,7 @@ object Main {
           //val filePath = jarPath + "/" + (sourceJson \\ "fname").extract[String]
           //val currencyPath = jarPath + "/" + (sourceJson \\ "currency_file").extract[String]
 
-          FileSource(filePath, currencyPath, sourceInfoList.head/*Todo: change to sourceInfo*/)
+          FileSource(filePath, currencyPath, sourceInfo/*Todo: change to sourceInfo*/)
         // For further extensions
         /*case "api" =>
           ???
